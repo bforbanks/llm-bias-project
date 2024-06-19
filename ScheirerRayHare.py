@@ -28,7 +28,7 @@ from scipy import stats
 
 
 # %%
-data = pd.read_excel("results.xlsx")
+data = pd.read_excel("data/results.xlsx")
 data.head()
 
 # %% [markdown]

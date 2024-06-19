@@ -89,5 +89,5 @@ for case in tqdm(range(len(cases))):
             )
             data[id].append(answer)
 df = pd.DataFrame(data)
-df.to_excel("results_untransformed.xlsx", index=False)
+df.to_excel("data/results_untransformed.xlsx", index=False)
 df

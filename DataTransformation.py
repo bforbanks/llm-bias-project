@@ -2,7 +2,7 @@
 import pandas as pd
 
 data = pd.read_excel(
-    "results_untransformed.xlsx",
+    "data/results_untransformed.xlsx",
     sheet_name="Sheet1",
     header=0,
 )  # Assuming headers are in the first row

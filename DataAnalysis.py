@@ -2,7 +2,7 @@
 import pandas as pd
 
 # %%
-df = pd.read_excel("results.xlsx")
+df = pd.read_excel("data/results.xlsx")
 
 # %%
 df.describe()
