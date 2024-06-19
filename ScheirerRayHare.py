@@ -28,7 +28,7 @@ from scipy import stats
 
 
 # %%
-data = pd.read_excel("output_new_test_rows.xlsx")
+data = pd.read_excel("results.xlsx")
 data.head()
 
 # %% [markdown]
@@ -114,7 +114,6 @@ p_inter = round(1 - stats.chi2.cdf(H_int, df_int), 4)
 print(p_rows, p_cols, p_inter)
 
 # %% check if the ranks are normally distributed
-
 from scipy.stats import shapiro
 
 for n in data["neutrality"].unique():
