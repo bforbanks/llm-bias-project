@@ -1,0 +1,9 @@
+python-dotenv
+tqdm
+pandas
+langchain
+langchain-openai
+IPython
+scipy
+matplotlib
+seaborn
