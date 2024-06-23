@@ -47,7 +47,7 @@ for i, propmt1 in enumerate(prompts):
 
 def render(X):
     # Convert the list of tuples into a pandas DataFrame
-    t_test = pd.DataFrame(X, columns=["Prompt 1", "Prompt 2", "X"]).round(4)
+    t_test = pd.DataFrame(X, columns=["Prompt 1", "Prompt 2", "X"]).round(5)
 
     # Output the DataFrame
     t_test = (
@@ -80,20 +80,21 @@ df_results = pd.DataFrame({"versus": versus, "p-value": p_values_t_test})
 df_results.to_latex("render.tex", float_format="%.4f", index=False)
 df_results
 
-# %%
+# %% For making the same analysis for the transformed data, ie.
+# grouped by sentiment or perspective
 df = pd.read_excel("data/results.xlsx")
 
 # df.describe()
 
-bias_dict = defaultdict(list)
+sentiment_dict = defaultdict(list)
 perspectivedict = defaultdict(list)
 
 for i, row in df.iterrows():
-    bias_dict[row["bias"]].append(row["score"])
+    sentiment_dict[row["sentiment"]].append(row["score"])
     perspectivedict[row["perspective"]].append(row["score"])
 
-bias_df = pd.DataFrame(bias_dict)
+sentiment_df = pd.DataFrame(sentiment_dict)
 perspective_df = pd.DataFrame(perspectivedict)
 
-df = bias_df
+df = sentiment_df
 # df = perspective_df

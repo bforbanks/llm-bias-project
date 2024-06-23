@@ -12,7 +12,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 sns.boxplot(
-    x="bias",
+    x="sentiment",
     y="score",
     hue="perspective",
     data=df,
@@ -24,16 +24,18 @@ sns.boxplot(
 
 # plt.legend(loc='upper right')
 
+plt.rcParams.update({"font.size": 14})  # Adjust the number to your preference
 plt.legend(loc="upper left", bbox_to_anchor=(1, 1))
 
 # save the plot as a png file with god resolution and transparent background
 plt.savefig("boxplot.png", dpi=300, transparent=True, bbox_inches="tight")
 
+plt.savefig("boxplot.png", dpi=300, transparent=True, bbox_inches="tight")
 
 plt.show()
 # %%
 means_table = df.pivot_table(
-    index="bias",
+    index="sentiment",
     columns="perspective",
     values="score",
     aggfunc="mean",
@@ -47,8 +49,8 @@ means_table.to_latex("render.tex", float_format="%.4f")
 means_table.style.background_gradient(cmap="Greens", vmin=5, vmax=7.5)
 
 # %%
-means_table = df.pivot_table(
-    index="bias",
+std_table = df.pivot_table(
+    index="sentiment",
     columns="perspective",
     values="score",
     aggfunc="std",
@@ -56,37 +58,22 @@ means_table = df.pivot_table(
     margins_name="Average",
 )
 
-means_table.to_latex("render.tex", float_format="%.4f")
+std_table.to_latex("render.tex", float_format="%.4f")
 
 ## print this table with color coding
-means_table.style.background_gradient(cmap="Greens", vmin=1.88, vmax=2.26)
+std_table.style.background_gradient(cmap="Greens", vmin=1.88, vmax=2.26)
 # %%
 # make a shapiro test for normality
 from scipy.stats import shapiro
 
-models = []
-models_data = []
-
-
-# Initialize an empty DataFrame to store Shapiro test results
-shapiro_results = pd.DataFrame(columns=["bias", "perspective", "p-value"])
-
-# Loop through each combination of bias and perspective to perform Shapiro tests
-for n in df["bias"].unique():
-    for p in df["perspective"].unique():
-        data = df[(df["bias"] == n) & (df["perspective"] == p)]["score"]
-        stat, p_value = shapiro(data)
-        # Correctly append the results to the DataFrame
-        new_row = {"bias": n, "perspective": p, "p-value": p_value}
-        shapiro_results = shapiro_results.append(new_row, ignore_index=True)
-# Pivot the results to match the format of the previous pivot tables
-shapiro_pivot = shapiro_results.pivot(
-    index="bias", columns="perspective", values="p-value"
-)
-
-# Apply color coding to the pivot table
-styled_shapiro_pivot = shapiro_pivot.style.background_gradient(
-    cmap="Greens", vmin=0, vmax=0.05
-)  # Adjust vmin and vmax based on expected p-value range
-## data is not normally distributed
 # %%
+# make a shapiro test for normality
+from scipy.stats import shapiro
+
+for sentiment in df["sentiment"].unique():
+    for perspective in df["perspective"].unique():
+        data = df[(df["sentiment"] == sentiment) & (df["perspective"] == perspective)][
+            "score"
+        ]
+        stat, p = shapiro(data)
+        print(f"{sentiment}[{perspective}] p-value: {p}")
