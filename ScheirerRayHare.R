@@ -1,14 +1,22 @@
 # Loading
-if(!require(rcompanion)){install.packages("rcompanion")}
-if(!require(FSA)){install.packages("FSA")}
-
 library("readxl")
-library(rcompanion)
-# xls files
+library(ARTool)
+
+# import data
 my_data <- read_excel("C:/Users/Benja/dev/dtu/llm-bias-project/data/results.xlsx")
+my_data$sentiment <- as.factor(my_data$sentiment)
+my_data$perspective <- as.factor(my_data$perspective)
+my_data$post <- as.factor(my_data$post)
 
-# make a scheirerRayHare test
-scheirerRayHare(score ~ neutrality + perspective + neutrality:perspective,
-                data = my_data)
+# check the data
+str(my_data)
 
+# make the model
+model = art(score ~ sentiment * perspective + Error(post),
+  data = my_data)
 
+# Check model
+model
+
+# Get results
+anova(model)

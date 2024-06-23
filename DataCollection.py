@@ -77,14 +77,14 @@ print(
 data = defaultdict(list)
 
 perspective_list = ["first_person", "third_person"]
-neutrality_list = ["positive", "neutral", "negative"]
+sentiment_list = ["positive", "neutral", "negative"]
 
 for case in tqdm(range(len(cases))):
     for perspective in range(2):
-        for neutrality in range(3):
-            id = neutrality_list[neutrality] + "_" + perspective_list[perspective]
+        for sentiment in range(3):
+            id = sentiment_list[sentiment] + "_" + perspective_list[perspective]
             answer = chain(
-                questions[neutrality_list[neutrality]][perspective_list[perspective]],
+                questions[sentiment_list[sentiment]][perspective_list[perspective]],
                 cases["cases"][case],
             )
             data[id].append(answer)

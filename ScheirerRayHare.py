@@ -47,7 +47,7 @@ data.head()
 
 # %%
 rows = (
-    data.groupby(["neutrality"], as_index=False)
+    data.groupby(["bias"], as_index=False)
     .agg({"rank": ["count", "mean", "var"]})
     .rename(columns={"rank": "row"})
 )
@@ -55,6 +55,7 @@ rows.columns = ["_".join(col) for col in rows.columns]
 rows.columns = rows.columns.str.replace(r"_$", "")
 rows["row_mean_rows"] = rows.row_mean.mean()
 rows["sqdev"] = (rows.row_mean - rows.row_mean_rows) ** 2
+rows
 
 # %%
 cols = (
@@ -66,9 +67,10 @@ cols.columns = ["_".join(col) for col in cols.columns]
 cols.columns = cols.columns.str.replace(r"_$", "")
 cols["col_mean_cols"] = cols.col_mean.mean()
 cols["sqdev"] = (cols.col_mean - cols.col_mean_cols) ** 2
+cols
 
 # %%
-data_sum = data.groupby(["neutrality", "perspective"], as_index=False).agg(
+data_sum = data.groupby(["bias", "perspective"], as_index=False).agg(
     {"rank": ["count", "mean", "var"]}
 )
 data_sum.columns = ["_".join(col) for col in data_sum.columns]
@@ -116,8 +118,8 @@ print(p_rows, p_cols, p_inter)
 # %% check if the ranks are normally distributed
 from scipy.stats import shapiro
 
-for n in data["neutrality"].unique():
+for n in data["sentiment"].unique():
     for p in data["perspective"].unique():
-        d = data[(data["neutrality"] == n) & (data["perspective"] == p)]["rank"]
+        d = data[(data["sentiment"] == n) & (data["perspective"] == p)]["rank"]
         stat, p = shapiro(d)
         print(f"Neutrality: {n}, Perspective: {p}, p-value: {p}")
