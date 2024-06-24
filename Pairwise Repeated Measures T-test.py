@@ -61,24 +61,11 @@ def render(X):
     display(t_test)
 
 
-render(p_values_wilcoxon)
-# render(p_values_t_test)
+# render(p_values_wilcoxon)
+render(p_values_t_test)
 # render(diffs)
 # render(std)
 # render(mean)
-
-# %%
-versus = [
-    "positive vs negative",
-    "positive vs neutral",
-    "negative vs neutral",
-    "first vs third",
-]
-p_values_t_test = [0.0000, 0.0075, 0.0000, 0.0000]
-
-df_results = pd.DataFrame({"versus": versus, "p-value": p_values_t_test})
-df_results.to_latex("render.tex", float_format="%.4f", index=False)
-df_results
 
 # %% For making the same analysis for the transformed data, ie.
 # grouped by sentiment or perspective
