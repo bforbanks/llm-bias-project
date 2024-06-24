@@ -22,7 +22,7 @@ To install the required packages, run:
 pip install -r requirements.txt
 ```
 
-Additionally, you need to create a .env file in the root directory of the project with the following content:
+Additionally, create a .env file in the root directory of the project with the following content:
 
 ```bash
 OPENAI_API_KEY=x
