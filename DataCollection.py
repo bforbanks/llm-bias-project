@@ -14,17 +14,15 @@ from IPython.display import display_markdown
 from collections import defaultdict
 
 # %%
-
 cases = pd.read_excel(
-    r"M:\OneDrive - Danmarks Tekniske Universitet\Main\Project in Statistical Evaluation for Artificial Intelligence and Data\Project\data.xlsx",
+    "data/prompts.xlsx",
     sheet_name="posts",
     header=0,
 )  # Assuming headers are in the first row
 
-
-questions = pd.read_excel(
-    r"M:\OneDrive - Danmarks Tekniske Universitet\Main\Project in Statistical Evaluation for Artificial Intelligence and Data\Project\data.xlsx",
-    sheet_name="metadata",
+preambles = pd.read_excel(
+    "data/prompts.xlsx",
+    sheet_name="preambles",
     header=0,
     index_col=0,  # Use the first column as the index (row names)
 )  # Assuming headers are in the first row
@@ -64,7 +62,7 @@ def chain(question, case):
 
 # %%
 display_markdown(
-    chain(questions["positive"]["first_person"], cases["cases"][0]), raw=True
+    chain(preambles["positive"]["first_person"], cases["cases"][0]), raw=True
 )
 
 # %%
@@ -84,7 +82,7 @@ for case in tqdm(range(len(cases))):
         for sentiment in range(3):
             id = sentiment_list[sentiment] + "_" + perspective_list[perspective]
             answer = chain(
-                questions[sentiment_list[sentiment]][perspective_list[perspective]],
+                preambles[sentiment_list[sentiment]][perspective_list[perspective]],
                 cases["cases"][case],
             )
             data[id].append(answer)
