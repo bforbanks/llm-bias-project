@@ -5,13 +5,12 @@ data = pd.read_excel(
     "data/results_untransformed.xlsx",
     sheet_name="Sheet1",
     header=0,
-)  # Assuming headers are in the first row
+)
 data.head()
 # %%
 
 r_dict = data.to_dict()
 
-# Create a DataFrame from the dictionary
 l = []
 for r in r_dict.keys():
     perspective = r.split("[")[0]
