@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import ttest_rel, wilcoxon
+from sympy import sign
 
 # %%
 df = pd.read_excel("data/results_untransformed.xlsx")
@@ -16,6 +17,7 @@ p_values_wilcoxon = []
 std = []
 mean = []
 diffs = []
+conf_ints = []
 
 
 prompts = df.columns
@@ -25,8 +27,23 @@ for i, propmt1 in enumerate(prompts):
     for j, prompt2 in enumerate(prompts):
         if i != j:
             # Make a paried t test
-            result = ttest_rel(df[propmt1], df[prompt2])
+            result = ttest_rel(
+                df[propmt1],
+                df[prompt2],
+            )
             p_values_t_test.append((prompts_names[i], prompts_names[j], result.pvalue))
+            conf_ints.append(
+                (
+                    prompts_names[i],
+                    prompts_names[j],
+                    [
+                        i.round(3)
+                        for i in result.confidence_interval(
+                            confidence_level=(1 - 0.00238)
+                        )
+                    ],
+                )
+            )
 
             # make a wilcoxon test
             result = wilcoxon(df[propmt1], df[prompt2])
@@ -66,6 +83,7 @@ render(p_values_t_test)
 # render(diffs)
 # render(std)
 # render(mean)
+# render(conf_ints)
 
 # %% For making the same analysis for the transformed data, ie.
 # grouped by sentiment or perspective
